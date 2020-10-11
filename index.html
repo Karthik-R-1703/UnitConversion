@@ -1,22 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script>
-        /* When the input field receives input, convert the value from feet to meters */
-function lengthConverter(valNum) {
-  document.getElementById("outputMeters").innerHTML = valNum / 0.0022046;
-}
+      /* When the input field receives input, convert the value from feet to meters */
+      function lengthConverter(valNum) {
+        document.getElementById("outputMeters").innerHTML = valNum / 0.0022046;
+      }
+      function unitChange(value) {
+        document.getElementById("OutputUnit").innerHTML = value;
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <p>
-        <label>Feet</label>
-        <input id="inputFeet" type="number" placeholder="Feet"
-        oninput="lengthConverter(this.value)" onchange="lengthConverter(this.value)">
-      </p>
-      <p>cm: <span id="outputMeters"></span></p>
-</body>
+      <label>Feet</label>
+      <input
+        id="inputFeet"
+        type="number"
+        placeholder="Feet"
+        oninput="lengthConverter(this.value)"
+        onchange="lengthConverter(this.value)"
+      />
+    </p>
+    <p>cm: <span id="outputMeters"></span></p>
+    <!--
+    <p>Output Unit: <span id="OutputUnit"></span></p>
+    <select id="unit" name="unit" onchange="unitChange(this.value)">
+      <option value="mm">mm</option>
+      <option value="cm">cm</option>
+      <option value="m">m</option>
+      <option value="km">km</option>
+    </select>
+    -->
+  </body>
 </html>
