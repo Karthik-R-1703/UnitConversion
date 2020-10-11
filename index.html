@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script>
+        /* When the input field receives input, convert the value from feet to meters */
+function lengthConverter(valNum) {
+  document.getElementById("outputMeters").innerHTML = valNum / 0.0022046;
+}
+    </script>
 </head>
 <body>
-    This is HTML
+    <p>
+        <label>Feet</label>
+        <input id="inputFeet" type="number" placeholder="Feet"
+        oninput="lengthConverter(this.value)" onchange="lengthConverter(this.value)">
+      </p>
+      <p>cm: <span id="outputMeters"></span></p>
 </body>
 </html>
