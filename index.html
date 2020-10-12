@@ -8,10 +8,10 @@
     <script>
       /* When the input field receives input, convert the value from feet to meters */
       function lengthConverter() {
-        var unitDropDown = document.getElementById("unit");
+        var unitDropDown = document.getElementById("unitLength");
         var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
 
-        var fromValue = document.getElementById("inputUnit").value;
+        var fromValue = document.getElementById("inputLengthUnit").value;
         document.getElementById("output_mm").innerHTML = Length_Conversion(
           fromUnit,
           "mm",
@@ -53,8 +53,42 @@
           fromValue
         );
       }
-      function unitChange(value) {
-        document.getElementById("OutputUnit").innerHTML = value;
+
+      function weightConverter() {
+        var unitDropDown = document.getElementById("unitWeight");
+        var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
+
+        var fromValue = document.getElementById("inputWeightUnit").value;
+        document.getElementById("output_mg").innerHTML = Weight_Conversion(
+          fromUnit,
+          "mg",
+          fromValue
+        );
+        document.getElementById("output_g").innerHTML = Weight_Conversion(
+          fromUnit,
+          "g",
+          fromValue
+        );
+        document.getElementById("output_kg").innerHTML = Weight_Conversion(
+          fromUnit,
+          "kg",
+          fromValue
+        );
+        document.getElementById("output_t").innerHTML = Weight_Conversion(
+          fromUnit,
+          "t",
+          fromValue
+        );
+        document.getElementById("output_lb").innerHTML = Weight_Conversion(
+          fromUnit,
+          "lb",
+          fromValue
+        );
+        document.getElementById("output_oz").innerHTML = Weight_Conversion(
+          fromUnit,
+          "oz",
+          fromValue
+        );
       }
     </script>
   </head>
@@ -62,12 +96,12 @@
     <p>
       <label>Enter Input : </label>
       <input
-        id="inputUnit"
+        id="inputLengthUnit"
         type="number"
         oninput="lengthConverter()"
         onchange="lengthConverter()"
       />
-      <select id="unit" name="unit" onchange="lengthConverter()">
+      <select id="unitLength" name="unitLength" onchange="lengthConverter()">
         <option value="mm">mm</option>
         <option value="cm">cm</option>
         <option value="m">m</option>
@@ -86,5 +120,29 @@
     <p>FT: <span id="output_ft"></span></p>
     <p>YD: <span id="output_yd"></span></p>
     <p>MI: <span id="output_mi"></span></p>
+
+    <p>
+      <label>Enter Input : </label>
+      <input
+        id="inputWeightUnit"
+        type="number"
+        oninput="weightConverter()"
+        onchange="weightConverter()"
+      />
+      <select id="unitWeight" name="unitWeight" onchange="weightConverter()">
+        <option value="mg">mg</option>
+        <option value="g">g</option>
+        <option value="kg">kg</option>
+        <option value="t">t</option>
+        <option value="lb">lb</option>
+        <option value="oz">oz</option>
+      </select>
+    </p>
+    <p>Milli Gram : <span id="output_mg"></span></p>
+    <p>Gram : <span id="output_g"></span></p>
+    <p>Kilo Gram : <span id="output_kg"></span></p>
+    <p>Tone : <span id="output_t"></span></p>
+    <p>Pound : <span id="output_lb"></span></p>
+    <p>Ounce : <span id="output_oz"></span></p>
   </body>
 </html>
