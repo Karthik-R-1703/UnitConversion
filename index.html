@@ -7,11 +7,50 @@
     <script src="UnitConversion.js"></script>
     <script>
       /* When the input field receives input, convert the value from feet to meters */
-      function lengthConverter(valNum) {
-        document.getElementById("outputMeters").innerHTML = Length_Conversion(
-          "ft",
+      function lengthConverter() {
+        var unitDropDown = document.getElementById("unit");
+        var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
+
+        var fromValue = document.getElementById("inputUnit").value;
+        document.getElementById("output_mm").innerHTML = Length_Conversion(
+          fromUnit,
+          "mm",
+          fromValue
+        );
+        document.getElementById("output_cm").innerHTML = Length_Conversion(
+          fromUnit,
           "cm",
-          valNum
+          fromValue
+        );
+        document.getElementById("output_m").innerHTML = Length_Conversion(
+          fromUnit,
+          "m",
+          fromValue
+        );
+        document.getElementById("output_km").innerHTML = Length_Conversion(
+          fromUnit,
+          "km",
+          fromValue
+        );
+        document.getElementById("output_in").innerHTML = Length_Conversion(
+          fromUnit,
+          "in",
+          fromValue
+        );
+        document.getElementById("output_ft").innerHTML = Length_Conversion(
+          fromUnit,
+          "ft",
+          fromValue
+        );
+        document.getElementById("output_yd").innerHTML = Length_Conversion(
+          fromUnit,
+          "yd",
+          fromValue
+        );
+        document.getElementById("output_mi").innerHTML = Length_Conversion(
+          fromUnit,
+          "mi",
+          fromValue
         );
       }
       function unitChange(value) {
@@ -21,24 +60,31 @@
   </head>
   <body>
     <p>
-      <label>Feet</label>
+      <label>Enter Input : </label>
       <input
-        id="inputFeet"
+        id="inputUnit"
         type="number"
-        placeholder="Feet"
-        oninput="lengthConverter(this.value)"
-        onchange="lengthConverter(this.value)"
+        oninput="lengthConverter()"
+        onchange="lengthConverter()"
       />
+      <select id="unit" name="unit" onchange="lengthConverter()">
+        <option value="mm">mm</option>
+        <option value="cm">cm</option>
+        <option value="m">m</option>
+        <option value="km">km</option>
+        <option value="in">m</option>
+        <option value="ft">m</option>
+        <option value="yd">m</option>
+        <option value="mi">m</option>
+      </select>
     </p>
-    <p>cm: <span id="outputMeters"></span></p>
-    <!--
-    <p>Output Unit: <span id="OutputUnit"></span></p>
-    <select id="unit" name="unit" onchange="unitChange(this.value)">
-      <option value="mm">mm</option>
-      <option value="cm">cm</option>
-      <option value="m">m</option>
-      <option value="km">km</option>
-    </select>
-    -->
+    <p>MM: <span id="output_mm"></span></p>
+    <p>CM: <span id="output_cm"></span></p>
+    <p>M: <span id="output_m"></span></p>
+    <p>KM: <span id="output_km"></span></p>
+    <p>IN: <span id="output_in"></span></p>
+    <p>FT: <span id="output_ft"></span></p>
+    <p>YD: <span id="output_yd"></span></p>
+    <p>MI: <span id="output_mi"></span></p>
   </body>
 </html>
