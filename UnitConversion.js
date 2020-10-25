@@ -30,11 +30,11 @@ function isWeightUnit(unit) {
   return false;
 }
 
-function Length_Conversion(fromUnit, toUnit, fromValue) {
+function Length_Conversion(fromUnit, toUnit, fromValue, roundingValue) {
   var conversionValue = Lenght_FromUnit_Base_ConversionFactor(fromUnit);
   var baseToValue = fromValue * conversionValue;
   conversionValue = Lenght_Base_ToUnit_ConversionFactor(toUnit);
-  return baseToValue * conversionValue;
+  return (baseToValue * conversionValue).toFixed(roundingValue);
 }
 
 function Lenght_FromUnit_Base_ConversionFactor(fromUnit) {
@@ -105,11 +105,11 @@ function Lenght_Base_ToUnit_ConversionFactor(toUnit) {
   return retVal;
 }
 
-function Weight_Conversion(fromUnit, toUnit, fromValue) {
+function Weight_Conversion(fromUnit, toUnit, fromValue, roundingValue) {
   var conversionValue = Weight_FromUnit_Base_ConversionFactor(fromUnit);
   var baseToValue = fromValue * conversionValue;
   conversionValue = Weight_Base_ToUnit_ConversionFactor(toUnit);
-  return baseToValue * conversionValue;
+  return (baseToValue * conversionValue).toFixed(roundingValue);
 }
 
 function Weight_FromUnit_Base_ConversionFactor(fromUnit) {
