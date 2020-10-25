@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="UnitConversion.js"></script>
+    <script>
+      function numberSystemConverter() {
+        var unitDropDown = document.getElementById("numberSystem");
+        var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
+
+        var fromValue = document.getElementById("inputNumberSystem").value;
+
+        switch (fromUnit) {
+          case "binary":
+            var num = parseInt(fromValue);
+            if (isNaN(num)) {
+              window.alert("Enter Valid Input.");
+              location.reload();
+            }
+            break;
+          case "octal":
+            var num = parseInt(fromValue);
+            if (isNaN(num)) {
+              window.alert("Enter Valid Input.");
+              location.reload();
+            }
+            break;
+          case "decimal":
+            var num = parseInt(fromValue);
+            if (isNaN(num)) {
+              window.alert("Enter Valid Input.");
+              location.reload();
+            }
+            break;
+          case "hexadecimal":
+            break;
+          default:
+            window.alert("Enter Valid Input.");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <p>
+      <label>Enter Number : </label>
+      <input
+        id="inputNumberSystem"
+        type="text"
+        placeholder="0"
+        oninput="numberSystemConverter()"
+        onchange="numberSystemConverter()"
+      />
+      <label> in </label>
+      <select
+        id="numberSystem"
+        name="numberSystem"
+        onchange="numberSystemConverter()"
+      >
+        <option value="binary">Binary</option>
+        <option value="octal">Octal</option>
+        <option value="decimal">Decimal</option>
+        <option value="hexadecimal">Hexa Decimal</option>
+      </select>
+    </p>
+    <p>Binary : <span id="output_binary"></span></p>
+    <p>Octal : <span id="output_octal"></span></p>
+    <p>Decimal : <span id="output_decimal"></span></p>
+    <p>Hexa Decimal : <span id="output_hexa_decimal"></span></p>
+  </body>
+</html>
