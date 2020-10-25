@@ -12,58 +12,71 @@
         var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
 
         var fromValue = document.getElementById("inputLengthUnit").value;
+
+        var roundingValue = document.getElementById("inputRoundingValue").value;
+
         document.getElementById("output_mm").innerHTML = Length_Conversion(
           fromUnit,
           "mm",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_cm").innerHTML = Length_Conversion(
           fromUnit,
           "cm",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_m").innerHTML = Length_Conversion(
           fromUnit,
           "m",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_km").innerHTML = Length_Conversion(
           fromUnit,
           "km",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_in").innerHTML = Length_Conversion(
           fromUnit,
           "in",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_ft").innerHTML = Length_Conversion(
           fromUnit,
           "ft",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_yd").innerHTML = Length_Conversion(
           fromUnit,
           "yd",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_mi").innerHTML = Length_Conversion(
           fromUnit,
           "mi",
-          fromValue
+          fromValue,
+          roundingValue
         );
       }
     </script>
   </head>
   <body>
     <p>
-      <label>Enter Input : </label>
+      <label>Enter Length : </label>
       <input
         id="inputLengthUnit"
         type="number"
+        placeholder="0"
         oninput="lengthConverter()"
         onchange="lengthConverter()"
       />
+      <label> in </label>
       <select id="unitLength" name="unitLength" onchange="lengthConverter()">
         <option value="mm">mm</option>
         <option value="cm">cm</option>
@@ -74,6 +87,15 @@
         <option value="yd">yd</option>
         <option value="mi">mi</option>
       </select>
+      <label> with </label>
+      <input
+        id="inputRoundingValue"
+        type="number"
+        placeholder="0"
+        oninput="lengthConverter()"
+        onchange="lengthConverter()"
+      />
+      <label> Decimal Places </label>
     </p>
     <p>MM: <span id="output_mm"></span></p>
     <p>CM: <span id="output_cm"></span></p>
