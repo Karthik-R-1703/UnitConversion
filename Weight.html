@@ -11,48 +11,59 @@
         var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
 
         var fromValue = document.getElementById("inputWeightUnit").value;
+
+        var roundingValue = document.getElementById("inputRoundingValue").value;
+
         document.getElementById("output_mg").innerHTML = Weight_Conversion(
           fromUnit,
           "mg",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_g").innerHTML = Weight_Conversion(
           fromUnit,
           "g",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_kg").innerHTML = Weight_Conversion(
           fromUnit,
           "kg",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_t").innerHTML = Weight_Conversion(
           fromUnit,
           "t",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_lb").innerHTML = Weight_Conversion(
           fromUnit,
           "lb",
-          fromValue
+          fromValue,
+          roundingValue
         );
         document.getElementById("output_oz").innerHTML = Weight_Conversion(
           fromUnit,
           "oz",
-          fromValue
+          fromValue,
+          roundingValue
         );
       }
     </script>
   </head>
   <body>
     <p>
-      <label>Enter Input : </label>
+      <label>Enter Weight : </label>
       <input
         id="inputWeightUnit"
         type="number"
+        placeholder="0"
         oninput="weightConverter()"
         onchange="weightConverter()"
       />
+      <label> in </label>
       <select id="unitWeight" name="unitWeight" onchange="weightConverter()">
         <option value="mg">mg</option>
         <option value="g">g</option>
@@ -61,6 +72,15 @@
         <option value="lb">lb</option>
         <option value="oz">oz</option>
       </select>
+      <label> with </label>
+      <input
+        id="inputRoundingValue"
+        type="number"
+        placeholder="0"
+        oninput="weightConverter()"
+        onchange="weightConverter()"
+      />
+      <label> Decimal Places </label>
     </p>
     <p>Milli Gram : <span id="output_mg"></span></p>
     <p>Gram : <span id="output_g"></span></p>
