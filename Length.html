@@ -8,11 +8,8 @@
       function lengthConverter() {
         var unitDropDown = document.getElementById("unitLength");
         var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
-
         var fromValue = document.getElementById("inputLengthUnit").value;
-
         var roundingValue = document.getElementById("inputRoundingValue").value;
-
         document.getElementById("output_mm").innerHTML = Length_Conversion(
           fromUnit,
           "mm",

@@ -7,11 +7,8 @@
       function weightConverter() {
         var unitDropDown = document.getElementById("unitWeight");
         var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
-
         var fromValue = document.getElementById("inputWeightUnit").value;
-
         var roundingValue = document.getElementById("inputRoundingValue").value;
-
         document.getElementById("output_mg").innerHTML = Weight_Conversion(
           fromUnit,
           "mg",

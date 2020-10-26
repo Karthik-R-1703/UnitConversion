@@ -7,35 +7,38 @@
       function numberSystemConverter() {
         var unitDropDown = document.getElementById("numberSystem");
         var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
-
         var fromValue = document.getElementById("inputNumberSystem").value;
-
+        var num;
         switch (fromUnit) {
           case "binary":
-            var num = parseInt(fromValue);
-            if (isNaN(num)) {
-              window.alert("Enter Valid Input.");
-              location.reload();
-            }
+            num = parseInt(fromValue, 2);
             break;
           case "octal":
-            var num = parseInt(fromValue);
-            if (isNaN(num)) {
-              window.alert("Enter Valid Input.");
-              location.reload();
-            }
+            num = parseInt(fromValue, 8);
             break;
           case "decimal":
-            var num = parseInt(fromValue);
-            if (isNaN(num)) {
-              window.alert("Enter Valid Input.");
-              location.reload();
-            }
+            num = parseInt(fromValue, 10);
             break;
           case "hexadecimal":
+            num = parseInt(fromValue, 16);
             break;
           default:
             window.alert("Enter Valid Input.");
+            location.reload();
+        }
+
+        if (!isNaN(num)) {
+          document.getElementById("output_binary").innerHTML = num.toString(2);
+          document.getElementById("output_octal").innerHTML = num.toString(8);
+          document.getElementById("output_decimal").innerHTML = num.toString(
+            10
+          );
+          document.getElementById(
+            "output_hexa_decimal"
+          ).innerHTML = num.toString(16);
+        } else {
+          window.alert("Enter Valid Input.");
+          location.reload();
         }
       }
     </script>
