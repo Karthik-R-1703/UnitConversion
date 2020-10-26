@@ -2,19 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
     <script src="UnitConversion.js"></script>
     <script>
       /* When the input field receives input, convert the value from feet to meters */
       function lengthConverter() {
         var unitDropDown = document.getElementById("unitLength");
         var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
-
         var fromValue = document.getElementById("inputLengthUnit").value;
-
         var roundingValue = document.getElementById("inputRoundingValue").value;
-
         document.getElementById("output_mm").innerHTML = Length_Conversion(
           fromUnit,
           "mm",
