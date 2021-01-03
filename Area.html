@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="UnitConversion.js"></script>
+    <script>
+      function areaConverter() {
+        var unitDropDown = document.getElementById("unitArea");
+        var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
+        var fromValue = document.getElementById("inputAreaUnit").value;
+        var roundingValue = document.getElementById("inputRoundingValue").value;
+        document.getElementById("output_mm^2").innerHTML = Length_Conversion(
+          fromUnit,
+          "mm",
+          fromValue,
+          roundingValue
+        );
+        document.getElementById("output_cm^2").innerHTML = Length_Conversion(
+          fromUnit,
+          "cm",
+          fromValue,
+          roundingValue
+        );
+        document.getElementById("output_m^2").innerHTML = Length_Conversion(
+          fromUnit,
+          "m",
+          fromValue,
+          roundingValue
+        );
+        document.getElementById("output_km^2").innerHTML = Length_Conversion(
+          fromUnit,
+          "km",
+          fromValue,
+          roundingValue
+        );
+        document.getElementById("output_in^2").innerHTML = Length_Conversion(
+          fromUnit,
+          "in",
+          fromValue,
+          roundingValue
+        );
+        document.getElementById("output_ft^2").innerHTML = Length_Conversion(
+          fromUnit,
+          "ft",
+          fromValue,
+          roundingValue
+        );
+        document.getElementById("output_yd^2").innerHTML = Length_Conversion(
+          fromUnit,
+          "yd",
+          fromValue,
+          roundingValue
+        );
+        document.getElementById("output_mi^2").innerHTML = Length_Conversion(
+          fromUnit,
+          "mi",
+          fromValue,
+          roundingValue
+        );
+      }
+    </script>
+  </head>
+  <body>
+    <p>
+      <label>Enter Area : </label>
+      <input
+        id="inputAreaUnit"
+        type="number"
+        placeholder="0"
+        oninput="areaConverter()"
+        onchange="areaConverter()"
+      />
+      <label> in </label>
+      <select id="unitArea" name="unitArea" onchange="areaConverter()">
+        <option value="mm^2">mm^2</option>
+        <option value="cm^2">cm^2</option>
+        <option value="m^2">m^2</option>
+        <option value="km^2">km^2</option>
+        <option value="in^2">in^2</option>
+        <option value="ft^2">ft^2</option>
+        <option value="yd^2">yd^2</option>
+        <option value="mi^2">mi^2</option>
+      </select>
+      <label> with </label>
+      <input
+        id="inputRoundingValue"
+        type="number"
+        placeholder="0"
+        oninput="areaConverter()"
+        onchange="areaConverter()"
+      />
+      <label> Decimal Places </label>
+    </p>
+    <p>MM: <span id="output_mm^2"></span></p>
+    <p>CM: <span id="output_cm^2"></span></p>
+    <p>M: <span id="output_m^2"></span></p>
+    <p>KM: <span id="output_km^2"></span></p>
+    <p>IN: <span id="output_in^2"></span></p>
+    <p>FT: <span id="output_ft^2"></span></p>
+    <p>YD: <span id="output_yd^2"></span></p>
+    <p>MI: <span id="output_mi^2"></span></p>
+  </body>
+</html>
