@@ -61,13 +61,13 @@
       }
     </script>
   </head>
-  <body>
+  <body onload="lengthConverter()">
     <p>
       <label>Enter Length : </label>
       <input
         id="inputLengthUnit"
         type="number"
-        placeholder="0"
+        value="0"
         oninput="lengthConverter()"
         onchange="lengthConverter()"
       />
@@ -86,7 +86,7 @@
       <input
         id="inputRoundingValue"
         type="number"
-        placeholder="0"
+        value="0"
         oninput="lengthConverter()"
         onchange="lengthConverter()"
       />

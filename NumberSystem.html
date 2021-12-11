@@ -43,13 +43,13 @@
       }
     </script>
   </head>
-  <body>
+  <body onload="numberSystemConverter()">
     <p>
       <label>Enter Number : </label>
       <input
         id="inputNumberSystem"
         type="text"
-        placeholder="0"
+        value="0"
         oninput="numberSystemConverter()"
         onchange="numberSystemConverter()"
       />

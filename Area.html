@@ -60,13 +60,13 @@
       }
     </script>
   </head>
-  <body>
+  <body onload="areaConverter()">
     <p>
       <label>Enter Area : </label>
       <input
         id="inputAreaUnit"
         type="number"
-        placeholder="0"
+        value="0"
         oninput="areaConverter()"
         onchange="areaConverter()"
       />
@@ -85,7 +85,7 @@
       <input
         id="inputRoundingValue"
         type="number"
-        placeholder="0"
+        value="0"
         oninput="areaConverter()"
         onchange="areaConverter()"
       />

@@ -48,13 +48,13 @@
       }
     </script>
   </head>
-  <body>
+  <body onload="weightConverter()">
     <p>
       <label>Enter Weight : </label>
       <input
         id="inputWeightUnit"
         type="number"
-        placeholder="0"
+        value="0"
         oninput="weightConverter()"
         onchange="weightConverter()"
       />
@@ -71,7 +71,7 @@
       <input
         id="inputRoundingValue"
         type="number"
-        placeholder="0"
+        value="0"
         oninput="weightConverter()"
         onchange="weightConverter()"
       />
