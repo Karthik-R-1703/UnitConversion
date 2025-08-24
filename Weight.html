@@ -2,86 +2,135 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <script src="UnitConversion.js"></script>
+  <script src="js/weight.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 1em;
+        background: #f9f9f9;
+      }
+      .container {
+        max-width: 400px;
+        margin: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 2em;
+      }
+      .form-group {
+        margin-bottom: 1em;
+        display: flex;
+        align-items: center;
+      }
+      label {
+        margin-right: 0.5em;
+        min-width: 110px;
+      }
+      input, select {
+        flex: 1;
+        padding: 0.4em;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+      .results {
+        margin-top: 2em;
+      }
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.3em 0;
+        border-bottom: 1px solid #eee;
+      }
+      .error {
+        color: #d00;
+        font-size: 0.95em;
+        margin-bottom: 1em;
+      }
+    </style>
     <script>
       function weightConverter() {
-        var unitDropDown = document.getElementById("unitWeight");
-        var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
-        var fromValue = document.getElementById("inputWeightUnit").value;
-        var roundingValue = document.getElementById("inputRoundingValue").value;
-        document.getElementById("output_mg").innerHTML = Weight_Conversion(
-          fromUnit,
-          "mg",
-          fromValue,
-          roundingValue
-        );
-        document.getElementById("output_g").innerHTML = Weight_Conversion(
-          fromUnit,
-          "g",
-          fromValue,
-          roundingValue
-        );
-        document.getElementById("output_kg").innerHTML = Weight_Conversion(
-          fromUnit,
-          "kg",
-          fromValue,
-          roundingValue
-        );
-        document.getElementById("output_t").innerHTML = Weight_Conversion(
-          fromUnit,
-          "t",
-          fromValue,
-          roundingValue
-        );
-        document.getElementById("output_lb").innerHTML = Weight_Conversion(
-          fromUnit,
-          "lb",
-          fromValue,
-          roundingValue
-        );
-        document.getElementById("output_oz").innerHTML = Weight_Conversion(
-          fromUnit,
-          "oz",
-          fromValue,
-          roundingValue
-        );
+        const unitDropDown = document.getElementById("unitWeight");
+        const fromUnit = unitDropDown.value;
+        const fromValueRaw = document.getElementById("inputWeightUnit").value;
+  const roundingValueRaw = document.getElementById("inputWeightRoundingValue").value;
+        let errorMsg = "";
+        const fromValue = parseFloat(fromValueRaw);
+        const roundingValue = parseInt(roundingValueRaw, 10);
+        if (fromValueRaw === "" || isNaN(fromValue) || fromValue < 0) {
+          errorMsg = "Please enter a valid non-negative weight value.";
+        } else if (roundingValueRaw === "" || isNaN(roundingValue) || roundingValue < 0 || roundingValue > 10) {
+          errorMsg = "Rounding value must be between 0 and 10.";
+        }
+        document.getElementById("errorMsg").textContent = errorMsg;
+        const units = ["mg", "g", "kg", "t", "lb", "oz"];
+        units.forEach(unit => {
+          const outputId = "output_" + unit;
+          if (errorMsg) {
+            document.getElementById(outputId).textContent = "-";
+          } else {
+            try {
+              const val = Weight_Conversion(fromUnit, unit, fromValue, roundingValue);
+              document.getElementById(outputId).textContent = val;
+            } catch (e) {
+              document.getElementById(outputId).textContent = "Error";
+            }
+          }
+        });
       }
     </script>
   </head>
   <body onload="weightConverter()">
-    <p>
-      <label>Enter Weight : </label>
-      <input
-        id="inputWeightUnit"
-        type="number"
-        value="0"
-        oninput="weightConverter()"
-        onchange="weightConverter()"
-      />
-      <label> in </label>
-      <select id="unitWeight" name="unitWeight" onchange="weightConverter()">
-        <option value="mg">mg</option>
-        <option value="g">g</option>
-        <option value="kg">kg</option>
-        <option value="t">t</option>
-        <option value="lb">lb</option>
-        <option value="oz">oz</option>
-      </select>
-      <label> with </label>
-      <input
-        id="inputRoundingValue"
-        type="number"
-        value="0"
-        oninput="weightConverter()"
-        onchange="weightConverter()"
-      />
-      <label> Decimal Places </label>
-    </p>
-    <p>Milli Gram : <span id="output_mg"></span></p>
-    <p>Gram : <span id="output_g"></span></p>
-    <p>Kilo Gram : <span id="output_kg"></span></p>
-    <p>Tone : <span id="output_t"></span></p>
-    <p>Pound : <span id="output_lb"></span></p>
-    <p>Ounce : <span id="output_oz"></span></p>
+    <div class="container" role="main">
+      <h2>Weight Unit Converter</h2>
+      <div id="errorMsg" class="error" aria-live="polite"></div>
+      <form autocomplete="off" onsubmit="return false;">
+        <div class="form-group">
+          <label for="inputWeightUnit">Enter Weight:</label>
+          <input
+            id="inputWeightUnit"
+            type="number"
+            min="0"
+            step="any"
+            value="0"
+            oninput="weightConverter()"
+            aria-label="Weight value"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="unitWeight">Unit:</label>
+          <select id="unitWeight" name="unitWeight" onchange="weightConverter()" aria-label="Select unit">
+            <option value="mg">mg</option>
+            <option value="g">g</option>
+            <option value="kg">kg</option>
+            <option value="t">t</option>
+            <option value="lb">lb</option>
+            <option value="oz">oz</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="inputWeightRoundingValue">Decimal Places:</label>
+          <input
+            id="inputWeightRoundingValue"
+            type="number"
+            min="0"
+            max="10"
+            value="2"
+            oninput="weightConverter()" onchange="weightConverter()"
+            aria-label="Decimal places for result"
+            required
+          />
+        </div>
+      </form>
+      <div class="results" aria-label="Conversion results">
+        <div class="result-row"><span>Milli Gram:</span> <span id="output_mg">-</span></div>
+        <div class="result-row"><span>Gram:</span> <span id="output_g">-</span></div>
+        <div class="result-row"><span>Kilo Gram:</span> <span id="output_kg">-</span></div>
+        <div class="result-row"><span>Tonne:</span> <span id="output_t">-</span></div>
+        <div class="result-row"><span>Pound:</span> <span id="output_lb">-</span></div>
+        <div class="result-row"><span>Ounce:</span> <span id="output_oz">-</span></div>
+      </div>
+    </div>
   </body>
 </html>
