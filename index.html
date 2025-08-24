@@ -12,11 +12,216 @@
       gtag('js', new Date());
       gtag('config', 'G-637VVZQT4Y');
     </script>
+  <!-- Load all conversion modules globally for tabs -->
+  <script src="js/length.js"></script>
+  <script src="js/area.js"></script>
+  <script src="js/weight.js"></script>
+  <script src="js/temperature.js"></script>
+  <script src="js/datasize.js"></script>
   </head>
-    <frameset rows="*,*" cols="*,*" frameborder="0" noresize>
-      <frame src="Length.html">
-      <frame src="Area.html">
-      <frame src="Weight.html">
-      <frame src="NumberSystem.html">
-    </frameset>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 1em;
+        background: #f9f9f9;
+      }
+      header {
+        width: 100%;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        padding: 1.5em 0 1em 0;
+        text-align: center;
+        font-size: 2.2em;
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: #2a3a5e;
+      }
+      .tabs {
+        display: flex;
+        justify-content: center;
+        margin: 2em 0 1em 0;
+        gap: 1em;
+        flex-wrap: wrap;
+      }
+      .tab-btn {
+        background: #fff;
+        border: 1px solid #bfc9d8;
+        border-radius: 8px 8px 0 0;
+        padding: 0.7em 2em;
+        font-size: 1.1em;
+        color: #2a3a5e;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s, color 0.2s;
+        outline: none;
+      }
+      .tab-btn.active {
+        background: #e0eafc;
+        color: #1a2a4e;
+        border-bottom: 2px solid #2a3a5e;
+      }
+      .tab-content {
+        display: none;
+        max-width: 400px;
+        margin: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 2em;
+        min-height: 400px;
+        animation: fadeIn 0.3s;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      footer {
+        width: 100%;
+        background: #fff;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.07);
+        text-align: center;
+        padding: 1em 0;
+        font-size: 1em;
+        color: #6c7a89;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+      }
+      @media (max-width: 700px) {
+        .tab-content {
+          padding: 1em;
+          min-height: 350px;
+        }
+        .tab-btn {
+          padding: 0.5em 1em;
+          font-size: 1em;
+        }
+        header {
+          font-size: 1.3em;
+          padding: 1em 0 0.7em 0;
+        }
+        footer {
+          font-size: 0.9em;
+          padding: 0.7em 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>Unit Conversion Web App</header>
+  <div class="tabs" role="tablist" id="tablist"></div>
+  <div id="length-tab" class="tab-content" role="tabpanel"></div>
+  <div id="area-tab" class="tab-content" role="tabpanel"></div>
+  <div id="data-tab" class="tab-content" role="tabpanel"></div>
+  <div id="number-tab" class="tab-content" role="tabpanel"></div>
+  <div id="temperature-tab" class="tab-content" role="tabpanel"></div>
+  <div id="weight-tab" class="tab-content" role="tabpanel"></div>
+    <footer>
+      &copy; 2025 Unit Conversion | Designed by Karthik-R-1703
+    </footer>
+    <noscript>
+      <p>This site requires JavaScript to function properly.</p>
+    </noscript>
+    <script>
+      // Tab definitions (sorted alphabetically by label)
+      const tabDefs = [
+        { id: 'area', label: 'Area', file: 'Area.html' },
+        { id: 'data', label: 'Data Size', file: 'DataSize.html' },
+        { id: 'length', label: 'Length', file: 'Length.html' },
+        { id: 'number', label: 'Number System', file: 'NumberSystem.html' },
+        { id: 'temperature', label: 'Temperature', file: 'Temperature.html' },
+        { id: 'weight', label: 'Weight', file: 'Weight.html' }
+      ];
+
+      // Render tabs dynamically
+      function renderTabs() {
+        const tablist = document.getElementById('tablist');
+        tablist.innerHTML = '';
+        tabDefs.forEach((tab, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'tab-btn' + (idx === 0 ? ' active' : '');
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
+          btn.setAttribute('aria-controls', tab.id + '-tab');
+          btn.textContent = tab.label;
+          btn.onclick = () => showTab(tab.id);
+          tablist.appendChild(btn);
+        });
+      }
+      renderTabs();
+
+      // Load converter HTML into tabs with error handling and loading indicator
+      function loadTabContent(tabId, file) {
+        const tabDiv = document.getElementById(tabId + '-tab');
+        tabDiv.innerHTML = '<div style="text-align:center;color:#6c7a89;">Loading...</div>';
+        fetch(file)
+          .then(res => {
+            if (!res.ok) {
+              throw new Error('Failed to fetch ' + file + ': ' + res.status);
+            }
+            return res.text();
+          })
+          .then(html => {
+            // Extract <body> content
+            const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+            const bodyContent = bodyMatch && bodyMatch[1].trim() ? bodyMatch[1] : html;
+            tabDiv.innerHTML = bodyContent;
+
+            // Extract and inject <style> tags
+            const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+            let styleMatch;
+            while ((styleMatch = styleRegex.exec(html)) !== null) {
+              const styleTag = document.createElement('style');
+              styleTag.textContent = styleMatch[1];
+              tabDiv.appendChild(styleTag);
+            }
+
+            // Extract and execute <script> tags
+            const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+            let scriptMatch;
+            while ((scriptMatch = scriptRegex.exec(html)) !== null) {
+              const scriptTag = document.createElement('script');
+              scriptTag.text = scriptMatch[1];
+              tabDiv.appendChild(scriptTag);
+            }
+
+            // Call the relevant converter function after content and scripts are loaded
+            setTimeout(() => {
+              if (tabId === 'length' && typeof lengthConverter === 'function') lengthConverter();
+              if (tabId === 'area' && typeof areaConverter === 'function') areaConverter();
+              if (tabId === 'weight' && typeof weightConverter === 'function') weightConverter();
+              if (tabId === 'data' && typeof dataSizeConverter === 'function') dataSizeConverter();
+              if (tabId === 'temperature' && typeof temperatureConverter === 'function') temperatureConverter();
+              if (tabId === 'number' && typeof numberSystemConverter === 'function') numberSystemConverter();
+            }, 0);
+          })
+          .catch(err => {
+            tabDiv.innerHTML = '<div style="text-align:center;color:#d9534f;">Error loading ' + file + '.</div>';
+            console.error('Error loading', file, err);
+          });
+      }
+      // Load all tab contents
+      tabDefs.forEach(tab => loadTabContent(tab.id, tab.file));
+
+      // Tab switching logic
+      function showTab(tabId) {
+        tabDefs.forEach(tab => {
+          document.getElementById(tab.id + '-tab').classList.remove('active');
+          const btn = document.querySelector('.tab-btn[aria-controls="' + tab.id + '-tab"]');
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+        document.getElementById(tabId + '-tab').classList.add('active');
+        const activeBtn = document.querySelector('.tab-btn[aria-controls="' + tabId + '-tab"]');
+        activeBtn.classList.add('active');
+        activeBtn.setAttribute('aria-selected', 'true');
+      }
+      // Set first tab as active on load
+      showTab(tabDefs[0].id);
+    </script>
+  </body>
 </html>
