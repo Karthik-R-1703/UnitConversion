@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  <script src="js/datasize.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 1em;
+        background: #f9f9f9;
+      }
+      .container {
+        max-width: 400px;
+        margin: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 2em;
+      }
+      .form-group {
+        margin-bottom: 1em;
+        display: flex;
+        align-items: center;
+      }
+      label {
+        margin-right: 0.5em;
+        min-width: 110px;
+      }
+      input, select {
+        flex: 1;
+        padding: 0.4em;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+      .results {
+        margin-top: 2em;
+      }
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.3em 0;
+        border-bottom: 1px solid #eee;
+      }
+      .error {
+        color: #d00;
+        font-size: 0.95em;
+        margin-bottom: 1em;
+      }
+    </style>
+    <script>
+      function dataSizeConverter() {
+        const unitDropDown = document.getElementById("unitDataSize");
+        const fromUnit = unitDropDown.value;
+        const fromValueRaw = document.getElementById("inputDataSizeUnit").value;
+  const roundingValueRaw = document.getElementById("inputDataSizeRoundingValue").value;
+        let errorMsg = "";
+        const fromValue = parseFloat(fromValueRaw);
+        const roundingValue = parseInt(roundingValueRaw, 10);
+        if (fromValueRaw === "" || isNaN(fromValue) || fromValue < 0) {
+          errorMsg = "Please enter a valid non-negative data size value.";
+        } else if (roundingValueRaw === "" || isNaN(roundingValue) || roundingValue < 0 || roundingValue > 10) {
+          errorMsg = "Rounding value must be between 0 and 10.";
+        }
+        document.getElementById("errorMsg").textContent = errorMsg;
+        const units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+        units.forEach(unit => {
+          const outputId = "output_" + unit;
+          if (errorMsg) {
+            document.getElementById(outputId).textContent = "-";
+          } else {
+            try {
+              const val = DataSize_Conversion(fromUnit, unit, fromValue, roundingValue);
+              document.getElementById(outputId).textContent = val;
+            } catch (e) {
+              document.getElementById(outputId).textContent = "Error";
+            }
+          }
+        });
+      }
+    </script>
+  </head>
+  <body onload="dataSizeConverter()">
+    <div class="container" role="main">
+      <h2>Data Size Unit Converter</h2>
+      <div id="errorMsg" class="error" aria-live="polite"></div>
+      <form autocomplete="off" onsubmit="return false;">
+        <div class="form-group">
+          <label for="inputDataSizeUnit">Enter Size:</label>
+          <input
+            id="inputDataSizeUnit"
+            type="number"
+            min="0"
+            step="any"
+            value="0"
+            oninput="dataSizeConverter()"
+            aria-label="Data size value"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="unitDataSize">Unit:</label>
+          <select id="unitDataSize" name="unitDataSize" onchange="dataSizeConverter()" aria-label="Select unit">
+            <option value="B">Bytes (B)</option>
+            <option value="KB">Kilobytes (KB)</option>
+            <option value="MB">Megabytes (MB)</option>
+            <option value="GB">Gigabytes (GB)</option>
+            <option value="TB">Terabytes (TB)</option>
+            <option value="PB">Petabytes (PB)</option>
+            <option value="EB">Exabytes (EB)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="inputDataSizeRoundingValue">Decimal Places:</label>
+          <input
+            id="inputDataSizeRoundingValue"
+            type="number"
+            min="0"
+            max="10"
+            value="2"
+            oninput="dataSizeConverter()" onchange="dataSizeConverter()"
+            aria-label="Decimal places for result"
+            required
+          />
+        </div>
+      </form>
+      <div class="results" aria-label="Conversion results">
+        <div class="result-row"><span>Bytes:</span> <span id="output_B">-</span></div>
+        <div class="result-row"><span>Kilobytes:</span> <span id="output_KB">-</span></div>
+        <div class="result-row"><span>Megabytes:</span> <span id="output_MB">-</span></div>
+        <div class="result-row"><span>Gigabytes:</span> <span id="output_GB">-</span></div>
+        <div class="result-row"><span>Terabytes:</span> <span id="output_TB">-</span></div>
+        <div class="result-row"><span>Petabytes:</span> <span id="output_PB">-</span></div>
+        <div class="result-row"><span>Exabytes:</span> <span id="output_EB">-</span></div>
+      </div>
+    </div>
+  </body>
+</html>
