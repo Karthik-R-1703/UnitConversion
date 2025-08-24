@@ -2,72 +2,147 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <script src="UnitConversion.js"></script>
+  <script src="js/numbersystem.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 1em;
+        background: #f9f9f9;
+      }
+      .container {
+        max-width: 400px;
+        margin: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 2em;
+      }
+      .form-group {
+        margin-bottom: 1em;
+        display: flex;
+        align-items: center;
+      }
+      label {
+        margin-right: 0.5em;
+        min-width: 110px;
+      }
+      input, select {
+        flex: 1;
+        padding: 0.4em;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+      .results {
+        margin-top: 2em;
+      }
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.3em 0;
+        border-bottom: 1px solid #eee;
+      }
+      .error {
+        color: #d00;
+        font-size: 0.95em;
+        margin-bottom: 1em;
+      }
+    </style>
     <script>
       function numberSystemConverter() {
-        var unitDropDown = document.getElementById("numberSystem");
-        var fromUnit = unitDropDown.options[unitDropDown.selectedIndex].value;
-        var fromValue = document.getElementById("inputNumberSystem").value;
-        var num;
-        switch (fromUnit) {
-          case "binary":
-            num = parseInt(fromValue, 2);
-            break;
-          case "octal":
-            num = parseInt(fromValue, 8);
-            break;
-          case "decimal":
-            num = parseInt(fromValue, 10);
-            break;
-          case "hexadecimal":
-            num = parseInt(fromValue, 16);
-            break;
-          default:
-            window.alert("Enter Valid Input.");
-            location.reload();
-        }
-
-        if (!isNaN(num)) {
-          document.getElementById("output_binary").innerHTML = num.toString(2);
-          document.getElementById("output_octal").innerHTML = num.toString(8);
-          document.getElementById("output_decimal").innerHTML = num.toString(
-            10
-          );
-          document.getElementById(
-            "output_hexa_decimal"
-          ).innerHTML = num.toString(16);
+        const unitDropDown = document.getElementById("numberSystem");
+        const fromUnit = unitDropDown.value;
+        const fromValueRaw = document.getElementById("inputNumberSystem").value.trim();
+        let errorMsg = "";
+        let num;
+        if (fromValueRaw === "") {
+          errorMsg = "Please enter a value.";
         } else {
-          window.alert("Enter Valid Input.");
-          location.reload();
+          switch (fromUnit) {
+            case "binary":
+              if (!/^[01]+$/.test(fromValueRaw)) {
+                errorMsg = "Invalid binary number.";
+              } else {
+                num = parseInt(fromValueRaw, 2);
+              }
+              break;
+            case "octal":
+              if (!/^[0-7]+$/.test(fromValueRaw)) {
+                errorMsg = "Invalid octal number.";
+              } else {
+                num = parseInt(fromValueRaw, 8);
+              }
+              break;
+            case "decimal":
+              if (!/^\d+$/.test(fromValueRaw)) {
+                errorMsg = "Invalid decimal number.";
+              } else {
+                num = parseInt(fromValueRaw, 10);
+              }
+              break;
+            case "hexadecimal":
+              if (!/^[0-9a-fA-F]+$/.test(fromValueRaw)) {
+                errorMsg = "Invalid hexadecimal number.";
+              } else {
+                num = parseInt(fromValueRaw, 16);
+              }
+              break;
+            default:
+              errorMsg = "Select a valid number system.";
+          }
+        }
+        document.getElementById("errorMsg").textContent = errorMsg;
+        const outputs = {
+          binary: "output_binary",
+          octal: "output_octal",
+          decimal: "output_decimal",
+          hexadecimal: "output_hexa_decimal"
+        };
+        if (errorMsg || isNaN(num)) {
+          Object.values(outputs).forEach(id => {
+            document.getElementById(id).textContent = "-";
+          });
+        } else {
+          document.getElementById(outputs.binary).textContent = num.toString(2);
+          document.getElementById(outputs.octal).textContent = num.toString(8);
+          document.getElementById(outputs.decimal).textContent = num.toString(10);
+          document.getElementById(outputs.hexadecimal).textContent = num.toString(16).toUpperCase();
         }
       }
     </script>
   </head>
   <body onload="numberSystemConverter()">
-    <p>
-      <label>Enter Number : </label>
-      <input
-        id="inputNumberSystem"
-        type="text"
-        value="0"
-        oninput="numberSystemConverter()"
-        onchange="numberSystemConverter()"
-      />
-      <label> in </label>
-      <select
-        id="numberSystem"
-        name="numberSystem"
-        onchange="numberSystemConverter()"
-      >
-        <option value="binary">Binary</option>
-        <option value="octal">Octal</option>
-        <option value="decimal">Decimal</option>
-        <option value="hexadecimal">Hexa Decimal</option>
-      </select>
-    </p>
-    <p>Binary : <span id="output_binary"></span></p>
-    <p>Octal : <span id="output_octal"></span></p>
-    <p>Decimal : <span id="output_decimal"></span></p>
-    <p>Hexa Decimal : <span id="output_hexa_decimal"></span></p>
+    <div class="container" role="main">
+      <h2>Number System Converter</h2>
+      <div id="errorMsg" class="error" aria-live="polite"></div>
+      <form autocomplete="off" onsubmit="return false;">
+        <div class="form-group">
+          <label for="inputNumberSystem">Enter Number:</label>
+          <input
+            id="inputNumberSystem"
+            type="text"
+            value="0"
+            oninput="numberSystemConverter()"
+            aria-label="Number value"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="numberSystem">System:</label>
+          <select id="numberSystem" name="numberSystem" onchange="numberSystemConverter()" aria-label="Select number system">
+            <option value="binary">Binary</option>
+            <option value="octal">Octal</option>
+            <option value="decimal">Decimal</option>
+            <option value="hexadecimal">Hexadecimal</option>
+          </select>
+        </div>
+      </form>
+      <div class="results" aria-label="Conversion results">
+        <div class="result-row"><span>Binary:</span> <span id="output_binary">-</span></div>
+        <div class="result-row"><span>Octal:</span> <span id="output_octal">-</span></div>
+        <div class="result-row"><span>Decimal:</span> <span id="output_decimal">-</span></div>
+        <div class="result-row"><span>Hexadecimal:</span> <span id="output_hexa_decimal">-</span></div>
+      </div>
+    </div>
   </body>
 </html>

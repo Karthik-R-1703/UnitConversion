@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  <script src="js/temperature.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 1em;
+        background: #f9f9f9;
+      }
+      .container {
+        max-width: 400px;
+        margin: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 2em;
+      }
+      .form-group {
+        margin-bottom: 1em;
+        display: flex;
+        align-items: center;
+      }
+      label {
+        margin-right: 0.5em;
+        min-width: 110px;
+      }
+      input, select {
+        flex: 1;
+        padding: 0.4em;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+      .results {
+        margin-top: 2em;
+      }
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.3em 0;
+        border-bottom: 1px solid #eee;
+      }
+      .error {
+        color: #d00;
+        font-size: 0.95em;
+        margin-bottom: 1em;
+      }
+    </style>
+    <script>
+      function temperatureConverter() {
+        const unitDropDown = document.getElementById("unitTemperature");
+        const fromUnit = unitDropDown.value;
+        const fromValueRaw = document.getElementById("inputTemperatureUnit").value;
+  const roundingValueRaw = document.getElementById("inputTemperatureRoundingValue").value;
+        let errorMsg = "";
+        const fromValue = parseFloat(fromValueRaw);
+        const roundingValue = parseInt(roundingValueRaw, 10);
+        if (fromValueRaw === "" || isNaN(fromValue)) {
+          errorMsg = "Please enter a valid temperature value.";
+        } else if (roundingValueRaw === "" || isNaN(roundingValue) || roundingValue < 0 || roundingValue > 10) {
+          errorMsg = "Rounding value must be between 0 and 10.";
+        }
+        document.getElementById("errorMsg").textContent = errorMsg;
+        const units = ["C", "F", "K"];
+        units.forEach(unit => {
+          const outputId = "output_" + unit;
+          if (errorMsg) {
+            document.getElementById(outputId).textContent = "-";
+          } else {
+            try {
+              const val = Temperature_Conversion(fromUnit, unit, fromValue, roundingValue);
+              document.getElementById(outputId).textContent = val;
+            } catch (e) {
+              document.getElementById(outputId).textContent = "Error";
+            }
+          }
+        });
+      }
+    </script>
+  </head>
+  <body onload="temperatureConverter()">
+    <div class="container" role="main">
+      <h2>Temperature Unit Converter</h2>
+      <div id="errorMsg" class="error" aria-live="polite"></div>
+      <form autocomplete="off" onsubmit="return false;">
+        <div class="form-group">
+          <label for="inputTemperatureUnit">Enter Temperature:</label>
+          <input
+            id="inputTemperatureUnit"
+            type="number"
+            step="any"
+            value="0"
+            oninput="temperatureConverter()"
+            aria-label="Temperature value"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="inputTemperatureRoundingValue">Decimal Places:</label>
+          <input
+            id="inputTemperatureRoundingValue"
+            type="number"
+            min="0"
+            max="10"
+            value="2"
+            oninput="temperatureConverter()" onchange="temperatureConverter()"
+            aria-label="Decimal places for result"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="unitTemperature">Unit:</label>
+          <select id="unitTemperature" name="unitTemperature" onchange="temperatureConverter()" aria-label="Select unit">
+            <option value="C">Celsius (°C)</option>
+            <option value="F">Fahrenheit (°F)</option>
+            <option value="K">Kelvin (K)</option>
+          </select>
+        </div>
+      </form>
+      <div class="results" aria-label="Conversion results">
+        <div class="result-row"><span>Celsius:</span> <span id="output_C">-</span></div>
+        <div class="result-row"><span>Fahrenheit:</span> <span id="output_F">-</span></div>
+        <div class="result-row"><span>Kelvin:</span> <span id="output_K">-</span></div>
+      </div>
+    </div>
+  </body>
+</html>
