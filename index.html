@@ -18,8 +18,33 @@
   <script src="js/weight.js"></script>
   <script src="js/temperature.js"></script>
   <script src="js/datasize.js"></script>
+  <script src="js/unitInfo.js"></script>
   </head>
     <style>
+      .unit-info-btn {
+        margin-left: 8px;
+        background: transparent;
+        border: none;
+        color: #2a3a5e;
+        cursor: pointer;
+        font-size: 0.95em;
+        padding: 0 6px;
+      }
+      .unit-info-btn:focus { outline: 2px solid #2a3a5e; }
+      .unit-tooltip {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 10px;
+        border-radius: 6px;
+        max-width: 300px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        color: #222;
+        z-index: 2000;
+      }
+      @media (max-width: 700px) {
+        .unit-tooltip { position: absolute; left: 10px !important; top: auto !important; }
+      }
+
       body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -188,6 +213,13 @@
               scriptTag.text = scriptMatch[1];
               tabDiv.appendChild(scriptTag);
             }
+
+            // Attach unit info buttons to this fragment if UnitInfo is available
+            try {
+              if (window.UnitInfo && typeof window.UnitInfo.attachUnitInfoToSelects === 'function') {
+                window.UnitInfo.attachUnitInfoToSelects(tabDiv);
+              }
+            } catch (e) { console.error('UnitInfo attach failed', e); alert('Unit Info failed to initialize: ' + (e && e.message ? e.message : e)); }
 
             // Call the relevant converter function after content and scripts are loaded
             setTimeout(() => {
