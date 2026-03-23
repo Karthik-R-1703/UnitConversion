@@ -1,7 +1,3 @@
-// Utility function for weight units
-function isWeightUnit(unit) {
-  return ["mg", "g", "kg", "t", "lb", "oz"].includes(unit);
-}
 // Weight conversion functions
 function Weight_Conversion(fromUnit, toUnit, fromValue, roundingValue) {
   const fromFactor = Weight_FromUnit_Base_ConversionFactor(fromUnit);

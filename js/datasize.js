@@ -1,16 +1,16 @@
-// Data size conversion functions
+// Data size conversion functions (binary 1024-based)
 function DataSize_Conversion(fromUnit, toUnit, fromValue, roundingValue) {
-  const factors = {
-    B: 1,
-    KB: 1024,
-    MB: 1048576,
-    GB: 1073741824,
-    TB: 1099511627776,
-    PB: 1125899906842624,
-    EB: 1152921504606846976
+  const exponents = {
+    B: 0,
+    KB: 1,
+    MB: 2,
+    GB: 3,
+    TB: 4,
+    PB: 5,
+    EB: 6
   };
-  if (!factors[fromUnit] || !factors[toUnit] || isNaN(fromValue) || isNaN(roundingValue)) return "Error";
-  const bytes = fromValue * factors[fromUnit];
-  const result = bytes / factors[toUnit];
+  if (exponents[fromUnit] === undefined || exponents[toUnit] === undefined || isNaN(fromValue) || isNaN(roundingValue)) return "Error";
+  const diff = exponents[fromUnit] - exponents[toUnit];
+  const result = fromValue * Math.pow(1024, diff);
   return Number(result).toFixed(roundingValue);
 }

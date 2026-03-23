@@ -1,7 +1,3 @@
-// Utility function for length units
-function isLengthUnit(unit) {
-  return ["mm", "cm", "m", "km", "in", "ft", "mi", "yd"].includes(unit);
-}
 // Length conversion functions
 function Length_Conversion(fromUnit, toUnit, fromValue, roundingValue) {
   const fromFactor = Length_FromUnit_Base_ConversionFactor(fromUnit);

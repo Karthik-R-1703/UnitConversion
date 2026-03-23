@@ -4,14 +4,16 @@
 A simple, responsive web application for converting between different units of Length, Area, Weight, Data Size, Temperature, and Number Systems.
 
 ## Features
+- Dark mode by default with light mode toggle (synced via `localStorage`)
+- Design matches [karthik r portfolio](https://karthik-r-1703.github.io/Karthik-R-1703/) — same color palette, typography, and border-based elevation
 - Tabbed interface for easy navigation between converters
-- Modern, accessible, and responsive UI
-- Keyboard and screen reader friendly
-- Works on desktop and mobile devices
 - Length, Area, Weight, Data Size, Temperature, and Number System converters
-- Unique input IDs for each converter to prevent cross-tab conflicts
-- Input validation and improved error handling (error messages shown in red)
-- Supports decimal rounding for results (customizable per converter)
+- Real-time conversion as you type
+- Input validation with descriptive error messages
+- Customizable decimal rounding (0–10 places)
+- Unit info tooltips on all selects
+- Keyboard and screen reader friendly (ARIA labels, live regions, focus outlines)
+- Responsive layout (640px mobile breakpoint)
 - No backend required (pure HTML, CSS, JS)
 
 ## Usage
@@ -27,40 +29,105 @@ A simple, responsive web application for converting between different units of L
 4. Enter a value, select units, and set decimal places for rounding.
 
 ## File Structure
-- `Area.html` — Area converter
-- `DataSize.html` — Data size converter
-- `index.html` — Main dashboard with all converters
-- `js/` — Contains JS files for each converter
-- `Length.html` — Length converter
-- `NumberSystem.html` — Number system converter
-- `README.md` — Project documentation
-- `Temperature.html` — Temperature converter
-- `Weight.html` — Weight converter
 
-## Accessibility & Responsiveness
-- Keyboard and screen reader friendly
-- Works on desktop and mobile devices
+```
+UnitConversion/
+├── index.html              # Main dashboard — tabbed interface
+├── Area.html               # Area converter
+├── DataSize.html           # Data size converter
+├── Length.html              # Length converter
+├── NumberSystem.html        # Number system converter
+├── Temperature.html         # Temperature converter
+├── Weight.html              # Weight converter
+├── js/
+│   ├── area.js             # Area conversion logic
+│   ├── datasize.js         # Data size conversion logic
+│   ├── length.js           # Length conversion logic
+│   ├── numbersystem.js     # Number system conversion logic
+│   ├── temperature.js      # Temperature conversion logic
+│   ├── weight.js           # Weight conversion logic
+│   └── unitInfo.js         # Shared unit tooltip/info system
+├── docs/
+│   ├── ARCHITECTURE.md     # Full architecture, design tokens, and conversion formulas
+│   └── CONTRIBUTING.md     # Guide for adding new converters
+├── .github/
+│   └── copilot-instructions.md  # GitHub Copilot project instructions
+├── README.md
+└── ToDo.txt                # Feature backlog
+```
 
 ## How It Works
-- All conversion logic is handled in the respective JS files in the `js/` folder
-- Each converter page loads its JS and updates results live
-- Tabbed navigation loads converter HTML dynamically
+
+All converters follow a **two-step conversion pattern** through a base unit:
+
+1. Source unit → base unit (multiply by from-factor)
+2. Base unit → target units (multiply by to-factor)
+
+| Category    | Base Unit  | Method |
+|-------------|------------|--------|
+| Length      | meter      | Factor multiplication |
+| Area        | m²         | Factor multiplication |
+| Weight      | kilogram   | Factor multiplication |
+| Data Size   | Byte       | Binary (1024-based) factor multiplication |
+| Temperature | Celsius    | Direct formulas (not factors) |
+| Number System | Decimal  | `parseInt`/`toString` with radix |
+
+Each converter page loads its JS module and updates all results live via `oninput`/`onchange` events.
+
+For full architecture details, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Design
+
+The UI follows the [karthik r portfolio](https://karthik-r-1703.github.io/Karthik-R-1703/) design system:
+
+- **Font**: Fira Code monospace (Google Fonts)
+- **Dark mode** (default): `#000` background, `#0a0a0a` cards, `#4ade80` accent
+- **Light mode**: `#f5f5f5` background, `#fff` cards, `#16a34a` accent
+- **Elevation**: Border-based (no box-shadows)
+- **Headings**: Lowercase with tight letter-spacing
+
+## Accessibility
+
+- ARIA labels on all form controls
+- Live regions (`aria-live="polite"`) for error messages
+- Focus outlines using accent color
+- `prefers-reduced-motion` support
+- Unit info tooltips with `role="status"` for screen readers
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Full architecture, conversion formulas, design tokens, naming conventions |
+| [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) | Step-by-step guide for adding new converters |
+| [.github/copilot-instructions.md](.github/copilot-instructions.md) | GitHub Copilot project instructions |
+| [ToDo.txt](ToDo.txt) | Feature backlog (15 enhancement ideas) |
 
 ## Recent Improvements
+
+- Dark/light theme toggle matching portfolio site design
+- Fira Code monospace font, CSS custom properties for all colors
+- Sticky nav bar with portfolio back-link
 - Improved error handling and validation for all converters
-- Added support for Data Size and Temperature conversions
+- Unit info tooltips system (`unitInfo.js`)
+- Data Size converter uses exponent-based math (avoids IEEE 754 precision loss)
+- Number System converter delegates to shared JS module
 
 ## Possible Future Enhancements
+
+See [ToDo.txt](ToDo.txt) for the full list. Highlights include:
+
 - History of recent conversions
 - Favorites for commonly used conversions
-- Custom units and conversion rates
-- Dark mode toggle
 - Localization and multi-language support
 - Export/share conversion results
-- Graphical visualization of conversions
 
 ## Contributing
+
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for the contributor guide and conventions.
+
 Pull requests and suggestions are welcome!
 
 ## License
+
 This project is open source and free to use.
