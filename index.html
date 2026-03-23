@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unit Conversion</title>
+    <title>unit conversion — karthik r</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-637VVZQT4Y"></script>
     <script>
@@ -18,115 +18,276 @@
   <script src="js/weight.js"></script>
   <script src="js/temperature.js"></script>
   <script src="js/datasize.js"></script>
-  </head>
+  <script src="js/numbersystem.js"></script>
+  <script src="js/unitInfo.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+
+      :root {
+        --bg: #000;
+        --bg-card: #0a0a0a;
+        --border: #181818;
+        --border-hover: #333;
+        --text: #fff;
+        --text-muted: #888;
+        --text-dim: #666;
+        --text-dimmer: #555;
+        --accent: #4ade80;
+        --error: #ef4444;
+        --font-mono: 'Fira Code', 'SF Mono', 'Fira Mono', 'Roboto Mono', monospace;
+      }
+
+      [data-theme="light"] {
+        --bg: #f5f5f5;
+        --bg-card: #fff;
+        --border: #ddd;
+        --border-hover: #bbb;
+        --text: #111;
+        --text-muted: #555;
+        --text-dim: #777;
+        --text-dimmer: #999;
+        --accent: #16a34a;
+        --error: #d00;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 1em;
-        background: #f9f9f9;
+        font-family: var(--font-mono);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
       }
-      header {
-        width: 100%;
-        background: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-        padding: 1.5em 0 1em 0;
+
+      a { color: var(--text); text-decoration: none; }
+
+      .unit-info-btn {
+        margin-left: 8px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 0.85em;
+        font-family: inherit;
+        padding: 0.15em 0.5em;
+        transition: border-color 0.2s, color 0.2s;
+      }
+      .unit-info-btn:hover { border-color: var(--border-hover); color: var(--text); }
+      .unit-info-btn:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .unit-tooltip {
+        background: var(--text);
+        color: var(--bg);
+        border: 1px solid var(--border-hover);
+        padding: 0.4rem 0.7rem;
+        border-radius: 6px;
+        max-width: 300px;
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+        z-index: 2000;
+      }
+
+      /* Nav */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.85rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--bg);
+      }
+      nav .logo { font-weight: 700; font-size: 1rem; letter-spacing: -0.5px; }
+      nav .logo a { color: var(--text); }
+      nav .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+      nav .nav-links a { color: var(--text-muted); transition: color 0.2s; }
+      nav .nav-links a:hover { color: var(--text); }
+      .theme-toggle {
+        background: none;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: inherit;
+        transition: border-color 0.2s, color 0.2s;
+        line-height: 1;
+      }
+      .theme-toggle:hover { border-color: var(--border-hover); color: var(--text); }
+
+      /* Header */
+      .wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+      .page-header {
+        padding: 3rem 0 2rem;
         text-align: center;
-        font-size: 2.2em;
-        font-weight: bold;
-        letter-spacing: 1px;
-        color: #2a3a5e;
       }
+      .page-header h1 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 700;
+        letter-spacing: -1.5px;
+        text-transform: lowercase;
+        margin-bottom: 0.5rem;
+      }
+      .page-header p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      /* Tabs */
       .tabs {
         display: flex;
         justify-content: center;
-        margin: 2em 0 1em 0;
-        gap: 1em;
+        margin: 0 0 2rem 0;
+        gap: 0.5rem;
         flex-wrap: wrap;
+        padding: 0 1rem;
       }
       .tab-btn {
-        background: #fff;
-        border: 1px solid #bfc9d8;
-        border-radius: 8px 8px 0 0;
-        padding: 0.7em 2em;
-        font-size: 1.1em;
-        color: #2a3a5e;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.5em 1.4em;
+        font-size: 0.82rem;
+        color: var(--text-muted);
         cursor: pointer;
-        font-weight: 500;
-        transition: background 0.2s, color 0.2s;
+        font-weight: 600;
+        font-family: inherit;
+        transition: border-color 0.2s, color 0.2s;
         outline: none;
+        text-transform: lowercase;
       }
+      .tab-btn:hover { border-color: var(--border-hover); color: var(--text); }
       .tab-btn.active {
-        background: #e0eafc;
-        color: #1a2a4e;
-        border-bottom: 2px solid #2a3a5e;
+        border-color: var(--accent);
+        color: var(--accent);
       }
+      .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+      /* Tab content */
       .tab-content {
         display: none;
-        max-width: 400px;
-        margin: auto;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        max-width: 480px;
+        margin: 0 auto 4rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
         padding: 2em;
         min-height: 400px;
-        animation: fadeIn 0.3s;
+        animation: fadeIn 0.3s ease;
       }
-      .tab-content.active {
-        display: block;
-      }
+      .tab-content.active { display: block; }
       @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
       }
+
+      /* Footer */
       footer {
-        width: 100%;
-        background: #fff;
-        box-shadow: 0 -2px 8px rgba(0,0,0,0.07);
         text-align: center;
-        padding: 1em 0;
-        font-size: 1em;
-        color: #6c7a89;
-        position: fixed;
-        left: 0;
-        bottom: 0;
+        padding: 2rem 0;
+        border-top: 1px solid var(--border);
+        color: var(--text-dimmer);
+        font-size: 0.75rem;
       }
-      @media (max-width: 700px) {
-        .tab-content {
-          padding: 1em;
-          min-height: 350px;
-        }
-        .tab-btn {
-          padding: 0.5em 1em;
-          font-size: 1em;
-        }
-        header {
-          font-size: 1.3em;
-          padding: 1em 0 0.7em 0;
-        }
-        footer {
-          font-size: 0.9em;
-          padding: 0.7em 0;
-        }
+      footer a { color: var(--text-dim); transition: color 0.2s; }
+      footer a:hover { color: var(--text); }
+      .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.5rem; }
+
+      /* Focus */
+      a:focus-visible, .tab-btn:focus-visible, .theme-toggle:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .fade-in { animation: none; opacity: 1; }
+        .tab-content { animation: none; }
+      }
+
+      /* Mobile */
+      @media (max-width: 640px) {
+        nav { padding: 1rem; }
+        nav .nav-links { gap: 0.8rem; font-size: 0.75rem; }
+        .wrap { padding: 0 1rem; }
+        .page-header { padding: 2rem 0 1.5rem; }
+        .tabs { gap: 0.4rem; }
+        .tab-btn { padding: 0.4em 0.9em; font-size: 0.75rem; }
+        .tab-content { padding: 1.2em; min-height: 350px; margin-bottom: 3rem; }
+        .unit-tooltip { position: absolute; left: 10px !important; top: auto !important; }
       }
     </style>
   </head>
   <body>
-    <header>Unit Conversion Web App</header>
+    <!-- Nav -->
+    <nav>
+      <div class="logo"><a href="https://karthik-r-1703.github.io/Karthik-R-1703/">karthik r</a></div>
+      <div class="nav-links">
+        <a href="https://karthik-r-1703.github.io/Karthik-R-1703/#projects">&larr; portfolio</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">&#9790;</button>
+      </div>
+    </nav>
+
+    <div class="wrap">
+      <header class="page-header">
+        <h1>unit conversion</h1>
+        <p>convert between units of length, area, weight, data size, temperature, and number systems.</p>
+      </header>
+    </div>
+
   <div class="tabs" role="tablist" id="tablist"></div>
-  <div id="length-tab" class="tab-content" role="tabpanel"></div>
-  <div id="area-tab" class="tab-content" role="tabpanel"></div>
-  <div id="data-tab" class="tab-content" role="tabpanel"></div>
-  <div id="number-tab" class="tab-content" role="tabpanel"></div>
-  <div id="temperature-tab" class="tab-content" role="tabpanel"></div>
-  <div id="weight-tab" class="tab-content" role="tabpanel"></div>
+  <div id="length-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-length"></div>
+  <div id="area-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-area"></div>
+  <div id="data-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-data"></div>
+  <div id="number-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-number"></div>
+  <div id="temperature-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-temperature"></div>
+  <div id="weight-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-weight"></div>
+
     <footer>
-      &copy; 2025 Unit Conversion | Designed by Karthik-R-1703
+      <div>&copy; <span id="year"></span> <a href="https://karthik-r-1703.github.io/Karthik-R-1703/">karthik r</a></div>
+      <div class="footer-links">
+        <a href="https://github.com/Karthik-R-1703/UnitConversion">github</a>
+        <a href="https://karthik-r-1703.github.io/Karthik-R-1703/">portfolio</a>
+      </div>
     </footer>
+
     <noscript>
-      <p>This site requires JavaScript to function properly.</p>
+      <p style="text-align:center;color:#888;padding:2rem;">This site requires JavaScript to function properly.</p>
     </noscript>
     <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Theme toggle
+      const toggle = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('theme');
+      if (saved) document.documentElement.setAttribute('data-theme', saved);
+      updateToggleIcon();
+      toggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'light' ? null : 'light';
+        if (next) {
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.removeItem('theme');
+        }
+        updateToggleIcon();
+      });
+      function updateToggleIcon() {
+        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '\u2600' : '\u263e';
+      }
+
       // Tab definitions (sorted alphabetically by label)
       const tabDefs = [
         { id: 'area', label: 'Area', file: 'Area.html' },
@@ -147,6 +308,7 @@
           btn.setAttribute('role', 'tab');
           btn.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
           btn.setAttribute('aria-controls', tab.id + '-tab');
+          btn.id = 'tab-' + tab.id;
           btn.textContent = tab.label;
           btn.onclick = () => showTab(tab.id);
           tablist.appendChild(btn);
@@ -157,7 +319,7 @@
       // Load converter HTML into tabs with error handling and loading indicator
       function loadTabContent(tabId, file) {
         const tabDiv = document.getElementById(tabId + '-tab');
-        tabDiv.innerHTML = '<div style="text-align:center;color:#6c7a89;">Loading...</div>';
+        tabDiv.innerHTML = '<div style="text-align:center;color:var(--text-dimmer);">Loading...</div>';
         fetch(file)
           .then(res => {
             if (!res.ok) {
@@ -171,23 +333,44 @@
             const bodyContent = bodyMatch && bodyMatch[1].trim() ? bodyMatch[1] : html;
             tabDiv.innerHTML = bodyContent;
 
-            // Extract and inject <style> tags
+            // Extract and inject <style> tags, filtering out :root/body rules that pollute the parent
             const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
             let styleMatch;
             while ((styleMatch = styleRegex.exec(html)) !== null) {
-              const styleTag = document.createElement('style');
-              styleTag.textContent = styleMatch[1];
-              tabDiv.appendChild(styleTag);
+              let css = styleMatch[1];
+              // Remove :root, [data-theme], and body rules — the parent page defines these
+              css = css.replace(/:root\s*\{[^}]*\}/g, '');
+              css = css.replace(/\[data-theme[^\]]*\]\s*\{[^}]*\}/g, '');
+              css = css.replace(/body\s*\{[^}]*\}/g, '');
+              css = css.trim();
+              if (css) {
+                const styleTag = document.createElement('style');
+                styleTag.textContent = css;
+                tabDiv.appendChild(styleTag);
+              }
             }
 
-            // Extract and execute <script> tags
-            const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+            // Extract and execute only the inline converter function scripts (skip <script src="..."> and UnitInfo scripts)
+            const scriptRegex = /<script(?:\s[^>]*)?>(?!\s*$)([\s\S]*?)<\/script>/gi;
             let scriptMatch;
             while ((scriptMatch = scriptRegex.exec(html)) !== null) {
+              const scriptContent = scriptMatch[1].trim();
+              // Skip empty scripts, external src scripts, and the UnitInfo attachment script
+              if (!scriptContent || scriptMatch[0].includes(' src=') || scriptContent.includes('UnitInfo')) continue;
               const scriptTag = document.createElement('script');
-              scriptTag.text = scriptMatch[1];
+              scriptTag.text = scriptContent;
               tabDiv.appendChild(scriptTag);
             }
+
+            // Attach unit info buttons scoped to this tab (before ID scoping so filters match original IDs)
+            try {
+              if (window.UnitInfo && typeof window.UnitInfo.attachUnitInfoToSelects === 'function') {
+                window.UnitInfo.attachUnitInfoToSelects(tabDiv);
+              }
+            } catch (e) { console.error('UnitInfo attach failed', e); }
+
+            // Scope all converter functions to query within their tab container
+            scopeConverterToTab(tabDiv, tabId);
 
             // Call the relevant converter function after content and scripts are loaded
             setTimeout(() => {
@@ -200,10 +383,49 @@
             }, 0);
           })
           .catch(err => {
-            tabDiv.innerHTML = '<div style="text-align:center;color:#d9534f;">Error loading ' + file + '.</div>';
+            tabDiv.innerHTML = '<div style="text-align:center;color:var(--error);">Error loading ' + file + '.</div>';
             console.error('Error loading', file, err);
           });
       }
+
+      // Make all getElementById calls within converter functions scoped to the tab container
+      function scopeConverterToTab(tabDiv, tabId) {
+        // Give each element with an id inside the tab a tab-scoped id
+        const allWithId = tabDiv.querySelectorAll('[id]');
+        allWithId.forEach(el => {
+          const originalId = el.id;
+          el.setAttribute('data-original-id', originalId);
+          el.id = tabId + '_' + originalId;
+        });
+
+        // Rewrite the converter function to look up scoped IDs within the tab
+        const converterMap = {
+          length: 'lengthConverter',
+          area: 'areaConverter',
+          weight: 'weightConverter',
+          data: 'dataSizeConverter',
+          temperature: 'temperatureConverter',
+          number: 'numberSystemConverter'
+        };
+
+        const fnName = converterMap[tabId];
+        if (!fnName || typeof window[fnName] !== 'function') return;
+
+        const originalFn = window[fnName];
+        window[fnName] = function() {
+          // Temporarily monkey-patch document.getElementById to scope to this tab
+          const origGetById = document.getElementById;
+          document.getElementById = function(id) {
+            return origGetById.call(document, tabId + '_' + id) || origGetById.call(document, id);
+          };
+          try {
+            originalFn();
+          } finally {
+            document.getElementById = origGetById;
+          }
+        };
+      }
+
       // Load all tab contents
       tabDefs.forEach(tab => loadTabContent(tab.id, tab.file));
 
